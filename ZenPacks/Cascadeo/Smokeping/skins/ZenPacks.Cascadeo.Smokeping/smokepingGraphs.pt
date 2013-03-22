@@ -1,0 +1,30 @@
+<tal:block metal:use-macro="here/templates/macros/page2">
+<tal:block metal:fill-slot="contentPane">
+
+<tal:block tal:define="tabletitle string:Smokeping Graphs; global timeupdated python:here.updateSPDevice(here.zSmokepingPrivateUrl + 'smokeping.cgi?target=' + here.zSmokepingTarget.replace('/', '.'))"> 
+<tal:block metal:use-macro="here/zenuimacros/macros/zentable">
+<tal:block metal:fill-slot="filterslot">
+
+<em>Updated: <span tal:condition="timeupdated" tal:content="timeupdated"></span></em>
+</tal:block>
+</tal:block>
+</tal:block>
+
+<div tal:condition="timeupdated">
+<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl + 'images/' + here.zSmokepingTarget + '_last_10800.png'" />
+<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl + 'images/' + here.zSmokepingTarget + '_last_108000.png'" />
+<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl + 'images/' + here.zSmokepingTarget + '_last_864000.png'" />
+<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl + 'images/' + here.zSmokepingTarget + '_last_34560000.png'" />
+
+<h2>
+<a target="_blank" tal:attributes="href python:here.zSmokepingPublicUrl + 'smokeping.cgi?target=' + here.zSmokepingTarget.replace('/', '.')">More Smokeping Graphs</a>
+</h2>
+
+</div>
+<div tal:condition="not: timeupdated">
+<h2>Unable to fetch Smokeping graphs for this device. Check zSmokeping Properties</h2>
+</div>
+
+</tal:block>
+</tal:block>
+
