@@ -74,18 +74,11 @@ def fetchImage(self, url, sizelimit=None, REQUEST=None):
     """
     fetch images
     """
-    # temporary - Josephson
-    import os
     user = getSecurityManager().getUser().getUserName()
-    os.system("echo \"user: %s\" >> /usr/local/zenoss/zenoss/log/event.log" % user)
-    # temporary - Josephson
 
     if user == 'Anonymous User':
         raise Unauthorized("Unauthorized")
 
-    # temporary - Josephson
-    # to accomodate Smokeping auth - Josephson
-    os.system("echo \"URL IS: %s\" >> /usr/local/zenoss/zenoss/log/event.log" % url)
     import re
     smokeping_user = 'zenoss'
     smokeping_pword = 'z3n0ss99'
@@ -131,37 +124,14 @@ def createSPDashboard(self, REQUEST=None):
             urls[url] = 1
 
     # Fetch target dashboard webpage to trigger smokeping to create latest images
-    # temporary - Josephson
-    # to accomodate Smokeping auth - Josephson
-    import os
     for url in urls.keys():
-        # temporary - Josephson
-        # to accomodate Smokeping auth - Josephson
-        os.system("echo \".urllib2.urlopen(\"%s\")\" >> /usr/local/zenoss/zenoss/log/event.log" % url)
+###        # temporary - Josephson
+###        # to accomodate Smokeping auth - Josephson
+###        os.system("echo \".urllib2.urlopen(\"%s\")\" >> /usr/local/zenoss/zenoss/log/event.log" % url)
         site = urllib2.urlopen(url)
             
     # Generate Dasboard for Zenoss
     html += "<html><body><div id=\"zensmokeping_dashboard\"><ul>"
-#    sorted_devices = sorted(devices, key=lambda dv: dv.getProperty('cSmokepingGroup'))
-#    # for d in devices:
-#    prev_smokeping_group = "" #sorted_devices[0].getProperty('cSmokepingGroup')
-#    for d in sorted_devices:
-#        if d.zSmokepingTarget != "":
-#            isNewGroup = d.getProperty('cSmokepingGroup') != prev_smokeping_group
-#            if isNewGroup:
-#                if prev_smokeping_group != "":
-#                    html += "</ul></li>"
-#                html += "<li><strong>" + d.getProperty('cSmokepingGroup') + "</strong><ul>"
-#
-#            html += "<li>"
-#            html += "<a target='_blank' href='" + d.zSmokepingPublicUrl + "smokeping.cgi?target="
-#            html += d.zSmokepingTarget.replace('/', '.') + "'>" + d.getDeviceName() + "</a>"
-#            html += "<img width='95%' src='/zport/fetchImage?url=" + d.zSmokepingPrivateUrl
-#            html += "images/" + d.zSmokepingTarget + "_mini.png'/>"
-#            html += "</li>"
-#
-#
-#            prev_smokeping_group = d.getProperty('cSmokepingGroup')
 
     orgs = sorted(self.dmd.Groups.Smokeping.getSubOrganizers(), key=lambda o:(o.id).upper())
     o = None
