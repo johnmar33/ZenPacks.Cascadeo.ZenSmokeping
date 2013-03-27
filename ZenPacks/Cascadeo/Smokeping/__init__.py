@@ -142,7 +142,6 @@ def createSPDashboard(self, REQUEST=None):
             
     # Generate Dasboard for Zenoss
     html += "<html><body><div id=\"zensmokeping_dashboard\"><ul>"
-#    # sort the devices
 #    sorted_devices = sorted(devices, key=lambda dv: dv.getProperty('cSmokepingGroup'))
 #    # for d in devices:
 #    prev_smokeping_group = "" #sorted_devices[0].getProperty('cSmokepingGroup')
@@ -187,13 +186,17 @@ def createSPDashboard(self, REQUEST=None):
     return html
 
 def createSample(self, REQUEST=None):
+    """
+    sample new zensmokeping ZenPack page
+    """
     user = getSecurityManager().getUser().getUserName()
     if user == 'Anonymous User':
         raise Unauthorized("Unauthorized")
 
-    html = "<html><body>Hello world ok? from sampleSample</body></html>"
+    html = "<html><body>Hello world ok? from createSample</body></html>"
     REQUEST.RESPONSE.setHeader('Content-Type','text/html')
     return html
+
 
 from Products.ZenModel.ZentinelPortal import ZentinelPortal
 ZentinelPortal.fetchImage = fetchImage
