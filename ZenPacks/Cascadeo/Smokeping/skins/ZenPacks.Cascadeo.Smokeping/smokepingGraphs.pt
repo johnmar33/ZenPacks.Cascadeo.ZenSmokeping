@@ -32,17 +32,11 @@ http://zenoss-smokeping.cascadeo.com:8080/zport/updateSPDevice?url=http://zenoss
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
 function f5_smokeping_graph() {
-	// alert(document.getElementById('update_url').value);
-	// get url parameter
+	// refresh smokeping graph
 	url_arr = ($('#update_url').val()).split("=");
-	// alert(url_arr[1].slice(0, -20));
-	//// alert("Value is " + $('#update_url').val() + "<--- ok?");
-		// TO-DO: remove image(s) first before calling the ajax function
 	tmp_img_url = "/zport/fetchImage?url=" + url_arr[1].slice(0,-20) + "images/" + url_arr[2].replace('.', '/');
 	$.ajax({url: $('#update_url').val(), success: function(result){
 		$('#timeupdated_span').html(result);
-		// alert(tmp_img_url);
-		// $('#img_last_10800').attr('src', '');
 		$('#img_last_10800').removeAttr('src');
 		$('#img_last_108000').removeAttr('src');
 		$('#img_last_864000').removeAttr('src');
@@ -55,7 +49,6 @@ function f5_smokeping_graph() {
 			$('#img_last_864000').attr('src', tmp_img_url+'_last_864000.png?'+d.getTime());
 			$('#img_last_34560000').attr('src', tmp_img_url+'_last_34560000.png?'+d.getTime());
 		}, 2000);
-		//$('#img_smokeping_graphs')
 	}});
 }
 
