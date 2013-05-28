@@ -1,7 +1,7 @@
 <tal:block metal:use-macro="here/templates/macros/page2">
 <tal:block metal:fill-slot="contentPane">
 
-<tal:block tal:define="tabletitle string:Smokeping Graphs; global timeupdated python:here.updateSPDevice(here.zSmokepingPrivateUrl + 'smokeping.cgi?target=' + here.zSmokepingTarget.replace('/', '.'))"> 
+<tal:block tal:define="tabletitle string:Smokeping Graphs; global timeupdated python:here.updateSPDevice(here.zSmokepingPrivateUrl.replace(' ', '') + 'smokeping.cgi?target=' + (here.zSmokepingTarget.replace('/', '.')).replace(' ', ''))"> 
 <tal:block metal:use-macro="here/zenuimacros/macros/zentable">
 <tal:block metal:fill-slot="filterslot">
 
@@ -11,13 +11,13 @@
 </tal:block>
 
 <div tal:condition="timeupdated" tal:attributes="id string:img_smokeping_graphs">
-<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl + 'images/' + here.zSmokepingTarget + '_last_10800.png';id string:img_last_10800" />
-<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl + 'images/' + here.zSmokepingTarget + '_last_108000.png'; id string:img_last_108000" />
-<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl + 'images/' + here.zSmokepingTarget + '_last_864000.png'; id string:img_last_864000" />
-<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl + 'images/' + here.zSmokepingTarget + '_last_34560000.png'; id string:img_last_34560000" />
+<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl.replace(' ', '') + 'images/' + here.zSmokepingTarget.replace(' ', '') + '_last_10800.png';id string:img_last_10800" />
+<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl.replace(' ', '') + 'images/' + here.zSmokepingTarget.replace(' ', '') + '_last_108000.png'; id string:img_last_108000" />
+<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl.replace(' ', '') + 'images/' + here.zSmokepingTarget.replace(' ', '') + '_last_864000.png'; id string:img_last_864000" />
+<img tal:attributes="src python:'/zport/fetchImage?url=' + here.zSmokepingPrivateUrl.replace(' ', '') + 'images/' + here.zSmokepingTarget.replace(' ', '') + '_last_34560000.png'; id string:img_last_34560000" />
 
 <h2>
-<a target="_blank" tal:attributes="href python:here.zSmokepingPublicUrl + 'smokeping.cgi?target=' + here.zSmokepingTarget.replace('/', '.')">More Smokeping Graphs</a>
+<a target="_blank" tal:attributes="href python:here.zSmokepingPublicUrl.replace(' ', '') + 'smokeping.cgi?target=' + here.zSmokepingTarget.replace('/', '.')">More Smokeping Graphs</a>
 </h2>
 
 </div>
@@ -28,10 +28,11 @@
 <!-- sample url:
 http://zenoss-smokeping.cascadeo.com:8080/zport/updateSPDevice?url=http://zenoss-smokeping.cascadeo.com/smokeping/smokeping.cgi?target=World.zenoss_test_target_josephson
 -->
-<input tal:attributes="name string:update_url; id string:update_url; type string:hidden; value python:'/zport/updateSPDevice?url='+here.zSmokepingPrivateUrl+'smokeping.cgi?target='+here.zSmokepingTarget.replace('/', '.')" />
+<input tal:attributes="name string:update_url; id string:update_url; type string:hidden; value python:'/zport/updateSPDevice?url='+here.zSmokepingPrivateUrl.replace(' ', '')+'smokeping.cgi?target='+here.zSmokepingTarget.replace('/', '.').replace(' ' , '')" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
 function f5_smokeping_graph() {
+	console.trace();
 	// refresh smokeping graph
 	url_arr = ($('#update_url').val()).split("=");
 	tmp_img_url = "/zport/fetchImage?url=" + url_arr[1].slice(0,-20) + "images/" + url_arr[2].replace('.', '/');

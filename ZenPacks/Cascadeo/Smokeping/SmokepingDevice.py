@@ -3,10 +3,11 @@ from Products.ZenModel.Device import Device
 
 class SmokepingDevice(Device):
     """
-    Example device subclass
+    Smokeping device subclass
     """
 
     _properties = Device._properties
+# TODO: set private and public URL here?
 
     def __init__(self, id, buildRelations=True):
         super(SmokepingDevice, self).__init__(id, buildRelations)
@@ -20,7 +21,7 @@ class SmokepingDevice(Device):
         device_name = device_name.replace('_', '__')
         device_name = device_name.replace('.', '_')
 
-        outfile = open('/home/smokeping_model', 'a')
+        outfile = open('/home/zenoss/smokeping_model', 'a')
         outfile.write("Modeling device zSmokepingTarget " + parent_folder + device_name + "\n")
         outfile.close()
         return parent_folder + device_name

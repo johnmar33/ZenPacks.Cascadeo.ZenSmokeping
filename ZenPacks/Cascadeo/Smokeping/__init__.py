@@ -91,6 +91,10 @@ def fetchImage(self, url, sizelimit=None, REQUEST=None):
             new_url = url[0:8] + smokeping_user + ':' + smokeping_pword + '@' + url[8:]
 
     site = urllib2.urlopen(url)
+    outfile = open('/usr/local/zenoss/zenoss/log/event.log', 'a')
+    outfile.write("%s and %s\n" %(url, new_url))
+    outfile.close()
+
     text = site.read( )
     if not sizelimit: sizelimit = len(text)
 
@@ -125,6 +129,10 @@ def createSPDashboard(self, REQUEST=None):
             url += t + '.'
             urls[url] = 1
 
+    # temporary - josephson (05/20/2013)
+    outfile = open('/usr/local/zenoss/zenoss/log/event.log', 'a')
+    outfile.write(str(urls.keys()))
+    outfile.close()
     # Fetch target dashboard webpage to trigger smokeping to create latest images
     for url in urls.keys():
         site = urllib2.urlopen(url)
@@ -152,16 +160,29 @@ def createSPDashboard(self, REQUEST=None):
         org_name = "/%s/%s" %(o.__primary_parent__.id, o.id)
         html += "<li><strong>" + org_name + "</strong><ul>"
   
+        # replace spaces (trailing/leading/gitna)
         for d in dvs:
               html += "<li>"
-              html += "<a target='_blank' href='" + d.zSmokepingPublicUrl + "smokeping.cgi?target="
-              html += d.zSmokepingTarget.replace('/', '.') + "'>" + d.getDeviceName() + "</a>"
-              html += "<img width='95%' src='/zport/fetchImage?url=" + d.zSmokepingPrivateUrl
-              html += "images/" + d.zSmokepingTarget + "_mini.png'/>"
+              html += "<a target='_blank' href='" + d.zSmokepingPublicUrl.replace(' ', '') + "smokeping.cgi?target="
+              html += d.zSmokepingTarget.replace('/', '.').replace(' ', '') + "'>" + d.getDeviceName() + "</a>"
+              html += "<img width='95%' src='/zport/fetchImage?url=" + d.zSmokepingPrivateUrl.replace(' ', '')
+              html += "images/" + d.zSmokepingTarget.replace(' ', '') + "_mini.png'/>"
               html += "</li>"
   
     html += "</ul></div></body></html>"
 
+    REQUEST.RESPONSE.setHeader('Content-Type','text/html')
+    return html
+
+def createSample(self, REQUEST=None):
+    """
+    sample new zensmokeping ZenPack page
+    """
+    user = getSecurityManager().getUser().getUserName()
+    if user == 'Anonymous User':
+        raise Unauthorized("Unauthorized")
+
+    html = "<html><body>Hello world ok? from createSample</body></html>"
     REQUEST.RESPONSE.setHeader('Content-Type','text/html')
     return html
 
@@ -235,5 +256,6 @@ from Products.ZenModel.ZentinelPortal import ZentinelPortal
 ZentinelPortal.fetchImage = fetchImage
 ZentinelPortal.createSPDashboard = createSPDashboard
 ZentinelPortal.updateSPDevice = updateSPDevice
+ZentinelPortal.createSample = createSample
 ZentinelPortal.filterDevice = filterDevice
 ZentinelPortal.jsDashboard = jsDashboard
