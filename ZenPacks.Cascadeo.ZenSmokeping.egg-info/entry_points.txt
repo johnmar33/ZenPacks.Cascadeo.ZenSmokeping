@@ -1,0 +1,3 @@
+[zenoss.zenpacks]
+ZenPacks.Cascadeo.ZenSmokeping = ZenPacks.Cascadeo.ZenSmokeping
+
